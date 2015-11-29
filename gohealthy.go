@@ -45,7 +45,10 @@ func (hcs *HealthChecks) Status() ([]HealthStatus, bool) {
 // StatusHandler to be used in webserver
 func (hcs *HealthChecks) StatusHandler(response http.ResponseWriter, request *http.Request) {
 	status, healthy := hcs.Status()
-	result, _ := json.Marshal(status)
+	result, err := json.Marshal(status)
+	if err != nil {
+		http.Error(response, "Failed to json encode health status", 500)
+	}
 	if !healthy {
 		http.Error(response, string(result), 500)
 		return
