@@ -16,7 +16,7 @@ func TestRegister(t *testing.T) {
 	if !status {
 		t.Errorf("this should be heatlhy")
 	}
-	if result[0].Message != "This is just a test" {
+	if result["TestRegister"].Message != "This is just a test" {
 		t.Errorf("Failed to register and get healthcheck status")
 	}
 }

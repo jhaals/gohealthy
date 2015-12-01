@@ -9,7 +9,7 @@ import (
 
 // HealthStatus contains Name, Message and Health
 type HealthStatus struct {
-	Name    string `json:"name"`
+	Name    string `json:"-"`
 	Message string `json:"message"`
 	Healthy bool   `json:"healthy"`
 }
@@ -30,16 +30,17 @@ func (hcs *HealthChecks) Register(healthCheck HealthCheck) {
 }
 
 // Status of all healthChecks
-func (hcs *HealthChecks) Status() ([]HealthStatus, bool) {
-	var x []HealthStatus
+func (hcs *HealthChecks) Status() (map[string]HealthStatus, bool) {
+	var m = make(map[string]HealthStatus)
 	heatlhy := true
 	for _, hc := range hcs.HealthChecks {
 		if !hc.Status().Healthy {
 			heatlhy = false
 		}
-		x = append(x, hc.Status())
+		s := hc.Status()
+		m[s.Name] = s
 	}
-	return x, heatlhy
+	return m, heatlhy
 }
 
 // StatusHandler to be used in webserver
