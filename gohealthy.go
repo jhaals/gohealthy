@@ -25,6 +25,7 @@ Example
  	if time.Now().Weekday() == time.Friday {
  		hs.Message = "this is clearly not alright"
  		hs.Healthy = false
+		return hs
  	}
  	hs.Message = "its not Friday so everything is awesome"
  	hs.Healthy = true
