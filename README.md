@@ -1,0 +1,19 @@
+# gohealthy
+goheatlhy is a library for registering HTTP health checks that can be verified by a load balancer such as haproxy. A HTTP 500 error will be returned if one or more of the health checks are failing.
+
+
+## Example
+
+    type customerPortal struct{}
+
+    func (f customerPortal) GetHealth() gohealthy.HealthStatus {
+     return gohealthy.HealthStatus{Name: "customer-satisfaction",
+       Message: "Customer Satisfaction is above 180%",
+       Healthy: true}
+    }
+
+    func main() {
+     g := gohealthy.Init()
+     g.Register(customerPortal{})
+     g.RunServer(1337)
+    }
